@@ -15,9 +15,17 @@ from app.db.redis import redis_client
 from app.api.v1.endpoints import analytics
 
 
+def run_migrations():
+    from alembic.config import Config
+    from alembic import command
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Startup
+    run_migrations()
     await redis_client.initialize()
     print("✅ Redis connected")
     yield
