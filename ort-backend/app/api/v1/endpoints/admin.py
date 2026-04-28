@@ -73,13 +73,17 @@ async def parse_question_image(file: UploadFile = File(...)):
             )
         )
 
+        import re
         raw_text = response.text.strip()
         if raw_text.startswith("```json"):
             raw_text = raw_text[7:]
         if raw_text.endswith("```"):
             raw_text = raw_text[:-3]
-            
-        parsed_questions = json.loads(raw_text.strip())
+
+        # Fix invalid JSON escape sequences from LaTeX backslashes (e.g. \underbrace → \\underbrace)
+        raw_text = re.sub(r'\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})', r'\\\\', raw_text.strip())
+
+        parsed_questions = json.loads(raw_text)
         return parsed_questions
 
     except Exception as e:
