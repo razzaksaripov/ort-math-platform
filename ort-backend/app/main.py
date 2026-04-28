@@ -17,7 +17,18 @@ from app.api.v1.endpoints import analytics
 
 def run_migrations():
     import subprocess
-    subprocess.run(["alembic", "upgrade", "head"], check=True)
+    import sys
+    import os
+    alembic_bin = os.path.join(os.path.dirname(sys.executable), "alembic")
+    result = subprocess.run(
+        [alembic_bin, "upgrade", "head"],
+        capture_output=True,
+        text=True,
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print("ALEMBIC ERROR:", result.stderr)
+        raise RuntimeError(f"Alembic migration failed:\n{result.stderr}")
 
 
 @asynccontextmanager
