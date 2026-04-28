@@ -41,7 +41,8 @@ def upgrade() -> None:
                existing_type=postgresql.TIMESTAMP(timezone=True),
                nullable=False,
                existing_server_default=sa.text('now()'))
-    op.add_column('questions', sa.Column('question_type', sa.Enum('COMPARISON', 'STANDARD', name='questiontype', create_constraint=True), server_default='STANDARD', nullable=False))
+    op.execute("CREATE TYPE questiontype AS ENUM ('COMPARISON', 'STANDARD')")
+    op.add_column('questions', sa.Column('question_type', sa.Enum('COMPARISON', 'STANDARD', name='questiontype', create_constraint=False), server_default='STANDARD', nullable=False))
     op.add_column('questions', sa.Column('options', postgresql.JSON(astext_type=sa.Text()), nullable=True))
     op.alter_column('questions', 'is_verified',
                existing_type=sa.BOOLEAN(),
@@ -114,6 +115,7 @@ def downgrade() -> None:
                existing_server_default=sa.text('false'))
     op.drop_column('questions', 'options')
     op.drop_column('questions', 'question_type')
+    op.execute("DROP TYPE IF EXISTS questiontype")
     op.alter_column('error_archive', 'added_at',
                existing_type=postgresql.TIMESTAMP(timezone=True),
                nullable=True,
