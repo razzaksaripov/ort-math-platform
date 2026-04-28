@@ -22,3 +22,7 @@ passlib[bcrypt]>=1.7.4
 
 # Utilities
 python-dotenv>=1.0.1
+
+# AI & Image Processing
+google-genai
+pillow
