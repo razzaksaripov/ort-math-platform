@@ -16,10 +16,8 @@ from app.api.v1.endpoints import analytics
 
 
 def run_migrations():
-    from alembic.config import Config
-    from alembic import command
-    alembic_cfg = Config("alembic.ini")
-    command.upgrade(alembic_cfg, "head")
+    import subprocess
+    subprocess.run(["alembic", "upgrade", "head"], check=True)
 
 
 @asynccontextmanager
