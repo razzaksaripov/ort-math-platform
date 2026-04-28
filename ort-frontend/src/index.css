@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-primary-light: #818CF8;
+  --color-primary-dark: #3730A3;
+  --color-success: #059669;
+  --color-success-light: #D1FAE5;
+  --color-warning: #D97706;
+  --color-warning-light: #FEF3C7;
+  --color-danger: #DC2626;
+  --color-danger-light: #FEE2E2;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F8FAFC;
+  --color-surface-3: #F1F5F9;
+  --color-glass: rgba(255, 255, 255, 0.7);
+  --color-glass-border: rgba(255, 255, 255, 0.3);
+  --color-text: #0F172A;
+  --color-text-2: #475569;
+  --color-text-3: #94A3B8;
+  --color-border: #E2E8F0;
+  --font-sans: "Inter", "Geist Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.shadow-soft {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}

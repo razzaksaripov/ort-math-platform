@@ -1,0 +1,24 @@
+# FastAPI & Server
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.1
+python-multipart>=0.0.9
+
+# Database (async)
+sqlalchemy[asyncio]>=2.0.35
+asyncpg>=0.30.0
+alembic>=1.13.1
+
+# Redis (async - убрал hiredis, чтобы не требовал компилятора C)
+redis>=5.0.1
+
+# Validation & Settings
+pydantic>=2.9.0
+pydantic-settings>=2.5.0
+email-validator>=2.1.0
+
+# Auth
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Utilities
+python-dotenv>=1.0.1
