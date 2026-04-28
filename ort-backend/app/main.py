@@ -59,6 +59,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://ort-math-platform-51dl.vercel.app",
+        "https://ort-math-platform.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
