@@ -139,20 +139,20 @@ export default function Quiz() {
   const correctIdx = ANSWER_LABELS.indexOf(feedback?.correct_answer);
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto px-0 md:px-0">
       {/* ════ Top bar: progress + timer ════ */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-4">
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-sm text-slate-500 font-medium">
+            <span className="text-xs md:text-sm text-slate-500 font-medium">
               Вопрос {currentIdx + 1} из {questions.length}
             </span>
 
             {/* Timer */}
             <div
-              className={`flex items-center gap-1.5 font-mono text-sm font-semibold ${timerColor} transition-colors`}
+              className={`flex items-center gap-1.5 font-mono text-xs md:text-sm font-semibold ${timerColor} transition-colors`}
             >
-              <Timer className="w-4 h-4" />
+              <Timer className="w-3.5 h-3.5 md:w-4 md:h-4" />
               {formatTime(timeSpent)}
               {timeSpent > 120 && (
                 <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full ml-1">
@@ -180,7 +180,7 @@ export default function Quiz() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -30 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-slate-200 p-8 mb-6"
+          className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-slate-200 p-4 md:p-8 mb-4"
         >
           {/* Badges row: question type + difficulty */}
           <div className="flex items-center gap-2 mb-4 flex-wrap">
@@ -210,14 +210,14 @@ export default function Quiz() {
           </div>
 
           {/* Question text with LaTeX */}
-          <div className="text-lg leading-relaxed text-slate-800">
+          <div className="text-base md:text-lg leading-relaxed text-slate-800 overflow-x-auto">
             <MathText>{question.content_latex}</MathText>
           </div>
         </motion.div>
       </AnimatePresence>
 
       {/* ════ Answer Buttons — mapped from options ════ */}
-      <div className="space-y-3 mb-6">
+      <div className="space-y-2 md:space-y-3 mb-4">
         {options.map((optionText, idx) => {
           const label = ANSWER_LABELS[idx];
           let variant = "default";
@@ -257,17 +257,17 @@ export default function Quiz() {
               whileTap={!feedback ? { scale: 0.99 } : {}}
               disabled={!!feedback}
               onClick={() => setSelected(idx)}
-              className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all duration-200 ${styles[variant]} disabled:cursor-default`}
+              className={`w-full flex items-center gap-3 p-3 md:p-4 rounded-xl border-2 text-left transition-all duration-200 ${styles[variant]} disabled:cursor-default`}
             >
               {/* Letter circle */}
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0 transition-all ${circleStyles[variant]}`}
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0 transition-all ${circleStyles[variant]}`}
               >
                 {label}
               </div>
 
               {/* Option text with KaTeX */}
-              <span className="flex-1 text-sm font-medium text-slate-700">
+              <span className="flex-1 text-sm font-medium text-slate-700 overflow-x-auto">
                 <MathText>{optionText}</MathText>
               </span>
 
