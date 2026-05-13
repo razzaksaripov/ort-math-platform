@@ -3,7 +3,7 @@ import useAuthStore from "../store/authStore";
 
 // Создаем экземпляр axios с базовым URL твоего FastAPI
 const api = axios.create({
-  baseURL: "https://ort-math-platform.onrender.com/api/v1",
+  baseURL: import.meta.env.VITE_API_URL || "https://ort-math-platform.onrender.com/api/v1",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -35,7 +35,7 @@ api.interceptors.response.use(
         try {
           // Пытаемся получить новый Access Token
           const res = await axios.post(
-            "https://ort-math-platform.onrender.com/api/v1/auth/refresh",
+            `${import.meta.env.VITE_API_URL || "https://ort-math-platform.onrender.com/api/v1"}/auth/refresh`,
             { refresh_token: refreshToken }
           );
 

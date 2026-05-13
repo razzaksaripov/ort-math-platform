@@ -15,7 +15,8 @@ const AdminPage = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('https://ort-math-platform.onrender.com/api/v1/admin/parse-image', {
+      const baseURL = import.meta.env.VITE_API_URL || 'https://ort-math-platform.onrender.com/api/v1';
+      const response = await fetch(`${baseURL}/admin/parse-image`, {
         method: 'POST',
         body: formData,
       });
@@ -38,7 +39,8 @@ const AdminPage = () => {
 
     setIsSaving(true);
     try {
-      const response = await fetch('https://ort-math-platform.onrender.com/api/v1/admin/save-questions', {
+      const baseURL = import.meta.env.VITE_API_URL || 'https://ort-math-platform.onrender.com/api/v1';
+      const response = await fetch(`${baseURL}/admin/save-questions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

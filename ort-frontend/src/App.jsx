@@ -10,11 +10,15 @@ import ErrorArchive from './pages/ErrorArchive';
 import ExamMode from './pages/ExamMode';
 import Analytics from './pages/Analytics';
 import AdminPage from './pages/AdminPage';
+import Landing from './pages/Landing';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Landing */}
+        <Route path="/" element={<Landing />} />
+
         {/* Public */}
         <Route path="/login" element={<Login />} />
 
@@ -48,7 +52,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
 
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );

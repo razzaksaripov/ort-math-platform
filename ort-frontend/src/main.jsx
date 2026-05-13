@@ -10,9 +10,10 @@ import ExamMode from "./pages/ExamMode";
 import AdminPage from "./pages/AdminPage";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
-import Practice from "./pages/Practice"; 
+import Practice from "./pages/Practice";
 import PracticeSprint from "./pages/PracticeSprint";
 import ErrorArchive from "./pages/ErrorArchive";
+import Landing from "./pages/Landing";
 
 function ComingSoon({ title }) {
   return (
@@ -30,6 +31,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
+        {/* Лендинг */}
+        <Route path="/" element={<Landing />} />
+
         {/* Публичный */}
         <Route path="/login" element={<Login />} />
 
@@ -64,7 +68,7 @@ createRoot(document.getElementById("root")).render(
           }
         />
 
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

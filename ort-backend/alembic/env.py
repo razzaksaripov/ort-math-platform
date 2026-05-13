@@ -20,7 +20,8 @@ from app.models import Base
 
 config = context.config
 # Убедись, что DATABASE_URL в settings корректный (postgresql+asyncpg://...)
-config.set_main_option("sqlalchemy.url", str(settings.DATABASE_URL))
+db_url = str(settings.DATABASE_URL).replace("?sslmode=require", "").replace("&sslmode=require", "")
+config.set_main_option("sqlalchemy.url", db_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -46,10 +47,12 @@ def do_run_migrations(connection) -> None:
 
 async def run_async_migrations() -> None:
     # Создаем асинхронный движок для миграций
+    ssl_args = {"ssl": "require"} if "neon.tech" in str(settings.DATABASE_URL) else {}
     connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        connect_args=ssl_args,
     )
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)

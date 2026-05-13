@@ -10,7 +10,8 @@ from app.core.config import settings
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db # Твой файл с подключением к БД
-from app.models.all_models import Question # Твоя модель таблицы вопросов
+from app.models.all_models import Question, Topic
+from sqlalchemy import select
 
 router = APIRouter(prefix="/admin", tags=["Admin CMS"])
 
@@ -24,7 +25,7 @@ class AIParsedQuestion(BaseModel):
     explanation: str
 
 @router.post("/parse-image", response_model=list[AIParsedQuestion])
-async def parse_question_image(file: UploadFile = File(...)):
+async def parse_question_image(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
     if not settings.GEMINI_API_KEY:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY не настроен")
 
@@ -32,17 +33,22 @@ async def parse_question_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Загрузите изображение")
 
     try:
+        # Загружаем реальные темы из БД
+        result = await db.execute(select(Topic).order_by(Topic.id))
+        topics = result.scalars().all()
+        topic_map = "\n".join([f'           {t.id} = {t.name}' for t in topics])
+
         content = await file.read()
         img = Image.open(io.BytesIO(content))
         client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
-        # ─── ОБНОВЛЕННЫЙ СТРОГИЙ ПРОМПТ ───
-        prompt = """
+        prompt = f"""
         Ты — ИИ-ассистент для парсинга тестов ОРТ. Извлеки задачи из изображения.
-        
+
         ВЕРНИ СТРОГО МАССИВ JSON ОБЪЕКТОВ. Каждый объект должен иметь ИМЕННО ЭТИ КЛЮЧИ:
-        
-        1. "topic_id": 5 (Арифметика), 6 (Алгебра), 7 (Геометрия) или 8 (Анализ данных).
+
+        1. "topic_id": Выбери из ЭТИХ существующих тем:
+{topic_map}
         
         2. "difficulty_level": Определи сложность задачи по шкале от 1 до 5, опираясь на стандарты ОРТ, SAT и GRE:
            - 1 (Очень легко): Базовая арифметика, простые действия в одно касание.
