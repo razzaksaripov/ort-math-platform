@@ -27,8 +27,36 @@ export default function Sidebar() {
     navigate("/login");
   };
 
+  const mobileLinks = [
+    { to: "/dashboard", icon: LayoutDashboard, label: "Главная" },
+    { to: "/practice", icon: Target, label: "Практика" },
+    { to: "/exam", icon: Timer, label: "Экзамен", isButton: true },
+    { to: "/analytics", icon: BarChart3, label: "Аналитика" },
+    { to: "/errors", icon: Archive, label: "Ошибки" },
+  ];
+
   return (
-    <aside className="glass shadow-soft w-60 h-screen fixed left-0 top-0 z-40 flex flex-col">
+    <>
+    {/* Нижнее меню — только на мобиле */}
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 flex items-center justify-around px-2 py-2">
+      {mobileLinks.map(({ to, icon: Icon, label, isButton }) => (
+        <NavLink
+          key={to}
+          to={to}
+          className={({ isActive }) =>
+            `flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl text-[10px] font-medium transition-all ${
+              isActive ? "text-indigo-600" : "text-slate-400"
+            } ${isButton ? "bg-indigo-600 text-white px-3 py-2 rounded-xl" : ""}`
+          }
+        >
+          <Icon className={`w-5 h-5 ${isButton ? "text-white" : ""}`} />
+          <span className={isButton ? "text-white" : ""}>{label}</span>
+        </NavLink>
+      ))}
+    </nav>
+
+    {/* Боковое меню — только на десктопе */}
+    <aside className="glass shadow-soft w-60 h-screen fixed left-0 top-0 z-40 flex-col hidden md:flex">
       {/* Logo */}
       <div className="px-5 py-6 flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
@@ -107,5 +135,6 @@ export default function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }
